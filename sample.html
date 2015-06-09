@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../assets/react.js"></script>
+    <script src="../assets/JSXTransformer.js"></script>
+  </head>
+  <body>
+    <div id="mount-point"></div>
+    <script type="text/jsx">
+      /** @jsx React.DOM */
+
+      var FilteredList = React.createClass({
+        filterList: function(event) {
+          var startingList = this.state.bagContents;
+          updatedList = startingList.filter(function(item){
+            return item.toLowerCase().search(
+              event.target.value.toLowerCase()) !== -1;
+          });
+          this.setState({ itemsInBag: updatedList });
+        },
+
+        getInitialState: function() {
+          return {
+            bagContents: [
+              "Apples", 
+              "Broccoli", 
+              "Chicken",
+              "Duck",
+              "Eggs",
+              "Fish",
+              "Granola",
+              "Hash Browns"
+            ],
+            items: []
+          };
+        },
+
+        componentWillMount: function() {
+          this.setState({ itemsInBag: this.state.bagContents })
+        },
+
+        render: function() {
+          return (
+            <div className="filter-list">
+              <input type="text" placeholder="Search" onChange={this.filterList}/>
+            <List bagContents={this.state.itemsInBag}/>
+            </div>
+          );
+        }
+      });
+
+      var List = React.createClass({
+        render: function() {
+          return (
+            <ul>
+            {
+              this.props.bagContents.map(function(item) {
+                return <li key={item}>{item}</li>
+              })
+            }
+            </ul>
+          )
+        }
+      });
+
+      React.render(<FilteredList/>, document.getElementById('mount-point'));
+
+
+
+      
+    </script>
+  </body>
+</html>
